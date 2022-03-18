@@ -21,7 +21,7 @@ enum Authorization {
     var auth: AuthorizationRef?
     var status: OSStatus
 
-    Log.debug("Obtaining Authorization...")
+    Log.info("Obtaining Authorization...")
     status = AuthorizationCreate(nil, nil, self.flags, &auth)
 
     if status != errAuthorizationSuccess {
@@ -35,7 +35,7 @@ enum Authorization {
                       code: .couldNotUnwrapAuthorization)
     }
 
-    Log.debug("Authorization successfully obtained")
+    Log.info("Authorization successfully obtained")
 
     let app = "macosvpn" as CFString
     

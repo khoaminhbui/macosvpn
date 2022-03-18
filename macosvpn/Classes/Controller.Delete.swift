@@ -19,7 +19,7 @@ import SystemConfiguration
 extension Controller {
   public enum Delete {
     public static func call() throws {
-      Log.debug("Shall we delete today?");
+      Log.info("Shall we delete today?");
 
       let names = Arguments.options.names
 

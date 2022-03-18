@@ -22,7 +22,7 @@ enum Keychain {
                                                 forService service: String,
                                                 withAccount account: String,
                                                 andPassword password: String) throws {
-    Log.debug("Creating Password Keychain Item with ID \(String(describing: service))")
+    Log.info("Creating Password Keychain Item with ID \(String(describing: service))")
     try CreateItem.create(label, withService: service, account: account, description: "PPP Password", andPassword: password)
   }
 
@@ -31,7 +31,7 @@ enum Keychain {
                                                     withPassword password: String) throws {
     var service = service
     service = "\(service).SS"
-    Log.debug("Creating Cisco IPSec Shared Secret Keychain Item with ID \(String(describing: service))")
+    Log.info("Creating Cisco IPSec Shared Secret Keychain Item with ID \(String(describing: service))")
     try CreateItem.create(label, withService: service, account: "", description: "IPSec Shared Secret", andPassword: password)
   }
 
@@ -40,7 +40,7 @@ enum Keychain {
                                              withPassword password: String) throws {
     var service = service
     service = "\(service ).XAUTH"
-    Log.debug("Creating Cisco IPSec XAuth Keychain Item with ID \(String(describing: service))")
+    Log.info("Creating Cisco IPSec XAuth Keychain Item with ID \(String(describing: service))")
     try CreateItem.create(label, withService: service, account: "", description: "IPSec XAuth Password", andPassword: password)
   }
 

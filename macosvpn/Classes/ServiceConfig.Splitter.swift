@@ -29,7 +29,7 @@ extension ServiceConfig {
 
       var result: [ServiceConfig] = []
       for slice in slices {
-        Log.debug("Processing argument slice: \(slice)")
+        Log.info("Processing argument slice: \(slice)")
         let serviceConfig = try ServiceConfig.Parser.parse((Array(slice)))
         result.append(serviceConfig)
       }

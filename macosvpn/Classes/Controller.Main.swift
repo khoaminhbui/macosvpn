@@ -28,7 +28,7 @@ public enum Controller {
         return error.code.rawValue
 
       } catch {
-        Log.debug("Unexpected error: \(error.localizedDescription)")
+        Log.info("Unexpected error: \(error.localizedDescription)")
         return ExitCode.unexpectedControllerRunError.rawValue
       }
 
@@ -59,7 +59,7 @@ public enum Controller {
         return error.code.rawValue
 
       } catch {
-        Log.debug("Unexpected error: \(error.localizedDescription)")
+        Log.info("Unexpected error: \(error.localizedDescription)")
         return ExitCode.unexpectedControllerRunError.rawValue
       }
 

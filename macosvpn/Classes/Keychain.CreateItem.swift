@@ -23,7 +23,7 @@ extension Keychain {
                        account: String,
                        description: String,
                        andPassword password: String) throws {
-      Log.debug("Creating System Keychain for \(label) with service \(service) and account \(account) and description \(description) and password? \(!password.isEmpty)")
+      Log.info("Creating System Keychain for \(label) with service \(service) and account \(account) and description \(description) and password? \(!password.isEmpty)")
 
       let keychain = try Keychain.Retrieve.systemKeychain()
 
@@ -57,7 +57,7 @@ extension Keychain {
         Log.error("Could not unlock System Keychain: \(String(describing: SecCopyErrorMessageString(accessStatus, nil)))")
         throw ExitError(message: "", code: .todo)
       }
-      Log.debug("Created empty Keychain access object")
+      Log.info("Created empty Keychain access object")
 
       guard let labelPointer = label.toUnsafeMutablePointer() else {
         Log.error("Could not convert label \(label) to pointer")
@@ -121,7 +121,7 @@ extension Keychain {
         }
       }
 
-      Log.debug("Successfully created Keychain Item")
+      Log.info("Successfully created Keychain Item")
     }
 
     private static var trustedAppPaths: [String] {

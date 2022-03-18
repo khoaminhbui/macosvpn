@@ -90,7 +90,7 @@ open class ServiceConfig {
       exit(ExitCode.invalidServiceKindCalled.rawValue)
     }
 
-    Log.debug("Assembling l2TPPPPConfig configuration dictionary...")
+    Log.info("Assembling l2TPPPPConfig configuration dictionary...")
     var result: [CFString: Any?] = [:]
 
     result.updateValue(endpoint as CFString?,
@@ -118,7 +118,7 @@ open class ServiceConfig {
     result.updateValue(logoutOneRef,
                        forKey: kSCPropNetPPPDisconnectOnLogout)
 
-    Log.debug("l2TPIPSecConfig ready: \(result)")
+    Log.info("l2TPIPSecConfig ready: \(result)")
     return result as CFDictionary
   }
   
@@ -128,7 +128,7 @@ open class ServiceConfig {
       exit(ExitCode.invalidServiceKindCalled.rawValue)
     }
 
-    Log.debug("Assembling l2TPIPSecConfig configuration dictionary...")
+    Log.info("Assembling l2TPIPSecConfig configuration dictionary...")
     var result: [CFString: CFString?] = [:]
 
     result.updateValue(kSCValNetIPSecAuthenticationMethodSharedSecret,
@@ -146,7 +146,7 @@ open class ServiceConfig {
                        forKey: kSCPropNetIPSecSharedSecret)
 
     if (localIdentifier) != nil {
-      Log.debug("Assigning group name \(String(describing: localIdentifier)) to L2TP service config")
+      Log.info("Assigning group name \(String(describing: localIdentifier)) to L2TP service config")
 
       result.updateValue(localIdentifier as CFString?,
                          forKey: kSCPropNetIPSecLocalIdentifier)
@@ -156,7 +156,7 @@ open class ServiceConfig {
 
     }
 
-    Log.debug("l2TPIPSecConfig ready: \(result)")
+    Log.info("l2TPIPSecConfig ready: \(result)")
 
     return result as CFDictionary
   }
@@ -167,7 +167,7 @@ open class ServiceConfig {
       exit(ExitCode.invalidServiceKindCalled.rawValue)
     }
 
-    Log.debug("Assembling l2TPIPv4Config configuration dictionary...")
+    Log.info("Assembling l2TPIPv4Config configuration dictionary...")
     var result: [CFString: Any?] = [:]
 
     result.updateValue(kSCValNetIPv4ConfigMethodPPP,
@@ -181,7 +181,7 @@ open class ServiceConfig {
                          forKey: kSCPropNetOverridePrimary)
     }
 
-    Log.debug("l2TPIPv4Config ready: \(result)")
+    Log.info("l2TPIPv4Config ready: \(result)")
 
     return result as CFDictionary
   }
@@ -192,14 +192,14 @@ open class ServiceConfig {
       exit(ExitCode.invalidServiceKindCalled.rawValue)
     }
 
-    Log.debug("Assembling ciscoIPv4Config configuration dictionary...")
+    Log.info("Assembling ciscoIPv4Config configuration dictionary...")
     var result: [CFString: CFString?] = [:]
 
     result.updateValue(kSCValNetIPv4ConfigMethodAutomatic,
                        forKey: kSCPropNetIPv4ConfigMethod)
 
 
-    Log.debug("ciscoIPv4Config ready: \(result)")
+    Log.info("ciscoIPv4Config ready: \(result)")
 
     return result as CFDictionary
   }
@@ -210,7 +210,7 @@ open class ServiceConfig {
       exit(ExitCode.invalidServiceKindCalled.rawValue)
     }
 
-    Log.debug("Assembling ciscoConfig configuration dictionary...")
+    Log.info("Assembling ciscoConfig configuration dictionary...")
     var result: [CFString: CFString?] = [:]
 
     result.updateValue(kSCValNetIPSecAuthenticationMethodSharedSecret,
@@ -240,7 +240,7 @@ open class ServiceConfig {
                        forKey: kSCPropNetIPSecXAuthPasswordEncryption)
 
     if (localIdentifier) != nil {
-      Log.debug("Assigning group name \(String(describing: localIdentifier)) to Cisco service config")
+      Log.info("Assigning group name \(String(describing: localIdentifier)) to Cisco service config")
 
       result.updateValue(localIdentifier as CFString?,
                          forKey: kSCPropNetIPSecLocalIdentifier)
@@ -249,7 +249,7 @@ open class ServiceConfig {
                          forKey: kSCPropNetIPSecLocalIdentifierType)
     }
 
-    Log.debug("ciscoConfig ready: \(result)")
+    Log.info("ciscoConfig ready: \(result)")
 
     return result as CFDictionary
   }

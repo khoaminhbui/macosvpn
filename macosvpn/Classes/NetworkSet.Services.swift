@@ -21,7 +21,7 @@ extension NetworkSet {
     public static func call(fromNetworkSet networkSet: SCNetworkSet) throws -> [Service] {
       var result: [Service] = []
 
-      Log.debug("Fetching all services from network set...")
+      Log.info("Fetching all services from network set...")
       guard let services = SCNetworkSetCopyServices(networkSet) else {
         throw ExitError(message: "Could not fetch all services from network set",
                         code: .couldNotRetrieveServicesFromNetworkSet)
@@ -33,7 +33,7 @@ extension NetworkSet {
         if !service.isCiscoOrL2TP {
           // Wisely excluding all non-relevant services right from the start.
           // So we do not accidentally delete a Bluetooth or Wi-Fi service :)
-          Log.debug("Ignoring irrelevant Service \(service.name)")
+          Log.info("Ignoring irrelevant Service \(service.name)")
           continue
         }
 

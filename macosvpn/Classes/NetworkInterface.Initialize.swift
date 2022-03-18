@@ -22,13 +22,13 @@ enum NetworkInterface {
       switch kind {
 
       case .L2TPOverIPSec:
-        Log.debug("Initializing L2TP Interface on top of IPv4...")
+        Log.info("Initializing L2TP Interface on top of IPv4...")
         guard let bottomInterface = SCNetworkInterfaceCreateWithInterface(kSCNetworkInterfaceIPv4, kSCNetworkInterfaceTypeL2TP) else {
           throw ExitError(message: "Could not initialize L2TP Interface on top of IPv4",
                           code: .couldNotInitializeL2TPInterface)
         }
 
-        Log.debug("Initializing PPP Interface on top of L2TP...")
+        Log.info("Initializing PPP Interface on top of L2TP...")
         guard let topInterface = SCNetworkInterfaceCreateWithInterface(bottomInterface, kSCNetworkInterfaceTypePPP) else {
           throw ExitError(message: "Could not initialize L2TP Interface on top of IPv4",
                           code: .couldNotInitializePPPInterface)
@@ -36,7 +36,7 @@ enum NetworkInterface {
         return topInterface
 
       case .CiscoIPSec:
-        Log.debug("Initializing IPSec Interface on top of IPv4")
+        Log.info("Initializing IPSec Interface on top of IPv4")
         // Cisco IPSec (without underlying interface)
         guard let topInterface = SCNetworkInterfaceCreateWithInterface(kSCNetworkInterfaceIPv4, kSCNetworkInterfaceTypeIPSec) else {
           throw ExitError(message: "Could not initialize L2TP Interface on top of IPv4",

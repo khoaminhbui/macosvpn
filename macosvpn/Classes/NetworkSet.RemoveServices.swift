@@ -25,12 +25,12 @@ extension NetworkSet {
 
       for service in services {
         if name != service.name {
-          Log.debug("I'm not deleting \(service.name) because you didn't ask me to using `\(Flag.All.dashed) \"\(service.name)\"`")
+          Log.info("I'm not deleting \(service.name) because you didn't ask me to using `\(Flag.All.dashed) \"\(service.name)\"`")
           continue
         }
 
         Log.warn("You already have a service with the name `\(name)`.")
-        Log.debug("That Service has the ID `\(service.id)`.")
+        Log.info("That Service has the ID `\(service.id)`.")
 
         if !Arguments.options.forceRequested {
           throw ExitError(message: "If you want me to overwrite it, you need to specify the `--force` flag",
@@ -44,7 +44,7 @@ extension NetworkSet {
                           code: .removingDuplicateServiceFailed,
                           systemStatus: true)
         }
-        Log.debug("Successfully removed duplicate VPN Service \(name).")
+        Log.info("Successfully removed duplicate VPN Service \(name).")
       }
     }
 
@@ -59,11 +59,11 @@ extension NetworkSet {
       for service in services {
 
         if !all && !names.contains(service.name as String) {
-          Log.debug("I'm not deleting \(service.name) because you didn't ask me to using `\(Flag.All.dashed) \"\(service.name)\"`")
+          Log.info("I'm not deleting \(service.name) because you didn't ask me to using `\(Flag.All.dashed) \"\(service.name)\"`")
           continue
         }
 
-        Log.debug("Deleting Service `\(service.name)`...")
+        Log.info("Deleting Service `\(service.name)`...")
         //continue
 
         if SCNetworkServiceRemove(service.service) {

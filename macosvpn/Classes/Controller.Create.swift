@@ -40,7 +40,7 @@ extension Controller {
                         code: .couldNotLockSystemPreferences,
                         systemStatus: true)
       }
-      Log.debug("Gained superhuman rights.");
+      Log.info("Gained superhuman rights.");
 
       // Later, when we're done, other processes may modify the system configuration again
       defer { SCPreferencesUnlock(prefs) }

@@ -23,36 +23,36 @@ extension ServiceConfig {
 
       let initialTopInterface = try NetworkInterface.Initialize.call(kind: config.kind)
 
-      Log.debug("Instantiating interface references for service `\(config.name)`...")
+      Log.info("Instantiating interface references for service `\(config.name)`...")
       guard let service = SCNetworkServiceCreate(preferences, initialTopInterface) else {
         throw ExitError(message: "Could not create network service for \(config.name)",
           code: .networkServiceCreationFailed,
           systemStatus: true)
       }
 
-      Log.debug("Adding default protocols (DNS, etc.) to service `\(config.name)`...")
+      Log.info("Adding default protocols (DNS, etc.) to service `\(config.name)`...")
       guard SCNetworkServiceEstablishDefaultConfiguration(service) else {
         throw ExitError(message: "Could not establish a default service configuration for \(config.name)",
           code: .defaultConfigurationFailed,
           systemStatus: true)
       }
 
-      Log.debug("Assigning name to service `\(config.name)`...")
+      Log.info("Assigning name to service `\(config.name)`...")
       guard SCNetworkServiceSetName(service, (config.name as CFString)) else {
         throw ExitError(message: "Could not assign a name to \(config.name)",
           code: .networkServiceNamingFailed,
           systemStatus: true)
       }
 
-      Log.debug("And we also would like to know the internal ID of this service")
+      Log.info("And we also would like to know the internal ID of this service")
       let serviceIDCF = SCNetworkServiceGetServiceID(service)
-      Log.debug("Look at my service ID: \(serviceIDCF!)")
+      Log.info("Look at my service ID: \(serviceIDCF!)")
       config.serviceID = serviceIDCF as String?
 
 
 
 
-      Log.debug("Reloading top Interface...")
+      Log.info("Reloading top Interface...")
       // Because, if we would like to modify the interface, we first need to freshly fetch it from the service
       // See https://lists.apple.com/archives/macnetworkprog/2013/Apr/msg00016.html
       let topInterfaceOptional = SCNetworkServiceGetInterface(service)
@@ -67,7 +67,7 @@ extension ServiceConfig {
       switch config.kind {
 
       case .L2TPOverIPSec:
-        Log.debug("Configuring \(config.humanKind) Service")
+        Log.info("Configuring \(config.humanKind) Service")
         // Let's apply all configuration to the PPP interface
         // Specifically, the servername, account username and password
         guard SCNetworkInterfaceSetConfiguration(topInterface, config.l2TPPPPConfig) else {
@@ -75,28 +75,28 @@ extension ServiceConfig {
           throw ExitError(message: "", code: .todo)   //PPPInterfaceConfigurationFailed
         }
 
-        Log.debug("Successfully configured PPP interface of service \(config.name)")
+        Log.info("Successfully configured PPP interface of service \(config.name)")
         // Now let's apply the shared secret to the IPSec part of the L2TP/IPSec Interface
         let extendedType: CFString = "IPSec" as CFString
         guard SCNetworkInterfaceSetExtendedConfiguration(topInterface, extendedType, config.l2TPIPSecConfig) else {
           Log.error("Error: Could not configure IPSec on PPP interface for service \(config.name). \(SCErrorString(SCError())) (Code \(SCError()))")
           throw ExitError(message: "", code: .todo)   //IPSecInterfaceConfigurationFailed
         }
-        Log.debug("Successfully configured IPSec on PPP interface for service %\(config.name)")
+        Log.info("Successfully configured IPSec on PPP interface for service %\(config.name)")
 
         break
 
 
 
       case .CiscoIPSec:
-        Log.debug("Configuring \(config.humanKind) Service")
+        Log.info("Configuring \(config.humanKind) Service")
         // Let's apply all configuration data to the Cisco IPSec interface
         // As opposed to L2TP, here all configuration goes to the top Interface, i.e. the only Interface there is.
         guard SCNetworkInterfaceSetConfiguration(topInterface, config.ciscoConfig) else {
           Log.error("Error: Could not configure Cisco IPSec interface for service \(config.name)")
           throw ExitError(message: "", code: .todo)   //CiscoInterfaceConfigurationFailed
         }
-        Log.debug("Successfully configured Cisco IPSec interface of service \(config.name)")
+        Log.info("Successfully configured Cisco IPSec interface of service \(config.name)")
         break
       }
 
@@ -104,7 +104,7 @@ extension ServiceConfig {
 
 
 
-      Log.debug("Fetching IPv4 protocol of service \(config.name)...")
+      Log.info("Fetching IPv4 protocol of service \(config.name)...")
       guard let serviceProtocol = SCNetworkServiceCopyProtocol(service, kSCNetworkProtocolTypeIPv4) else {
         throw ExitError(message: "Could not fetch IPv4 protocol of \(config.name)",
           code: .todo,
@@ -114,7 +114,7 @@ extension ServiceConfig {
       switch config.kind {
 
       case .L2TPOverIPSec:
-        Log.debug("Configuring IPv4 protocol of service \(config.name)...")
+        Log.info("Configuring IPv4 protocol of service \(config.name)...")
         guard SCNetworkProtocolSetConfiguration(serviceProtocol, config.l2TPIPv4Config) else {
           throw ExitError(message: "Could not configure IPv4 L2TP protocol of \(config.name)",
             code: .todo,
@@ -124,7 +124,7 @@ extension ServiceConfig {
 
 
       case .CiscoIPSec:
-        Log.debug("Configuring IPv4 protocol of service \(config.name)...")
+        Log.info("Configuring IPv4 protocol of service \(config.name)...")
         guard SCNetworkProtocolSetConfiguration(serviceProtocol, config.ciscoIPv4Config) else {
           throw ExitError(message: "Could not configure IPv4 Cisco protocol of \(config.name)",
             code: .todo,
@@ -151,7 +151,7 @@ extension ServiceConfig {
 
 
 
-      Log.debug("Adding Service \(service) to networkSet \(networkSet)...")
+      Log.info("Adding Service \(service) to networkSet \(networkSet)...")
 
       guard SCNetworkSetAddService(networkSet, service) else {
         if SCError() == 1005 {
@@ -163,18 +163,18 @@ extension ServiceConfig {
           throw ExitError(message: "", code: .todo)   //AddingNetworkServiceFailed
         }
       }
-      Log.debug("Added successfully to networkSet...")
+      Log.info("Added successfully to networkSet...")
 
 
 
 
-      Log.debug("Preparing to add Keychain items for service \(config.name)...")
+      Log.info("Preparing to add Keychain items for service \(config.name)...")
 
       switch config.kind {
 
       case .L2TPOverIPSec:
         if config.serviceID != nil && config.username != nil && config.password != nil {
-          Log.debug("Creating PPP Keychain Item...")
+          Log.info("Creating PPP Keychain Item...")
 
           try Keychain.createPasswordKeyChainItem(config.name,
                                                   forService: config.serviceID!,
@@ -187,7 +187,7 @@ extension ServiceConfig {
 
       case .CiscoIPSec:
         if config.serviceID != nil && config.password != nil {
-          Log.debug("Creating XAuth Keychain Item...")
+          Log.info("Creating XAuth Keychain Item...")
 
           try Keychain.createXAuthKeyChainItem(config.name,
                                                forService: config.serviceID!,
@@ -200,7 +200,7 @@ extension ServiceConfig {
       }
 
       if config.serviceID != nil && config.sharedSecret != nil {
-        Log.debug("Creating Shared Secret Keychain Item...")
+        Log.info("Creating Shared Secret Keychain Item...")
 
         try Keychain.createSharedSecretKeyChainItem(config.name,
                                                     forService: config.serviceID!,
@@ -216,7 +216,7 @@ extension ServiceConfig {
 
 
 
-      Log.debug("Commiting all changes including service \(config.name)...")
+      Log.info("Commiting all changes including service \(config.name)...")
       if !SCPreferencesCommitChanges(preferences) {
         Log.error("Error: Could not commit preferences with service \(config.name). \(SCErrorString(SCError())) (Code \(SCError()))")
         throw ExitError(message: "", code: .committingPreferencesFailed)   //CommingingPreferencesFailed

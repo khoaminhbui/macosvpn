@@ -19,7 +19,7 @@ import Security
 extension Keychain {
   enum Retrieve {
     public static func systemKeychain() throws -> SecKeychain {
-      Log.debug("Retrieving System Keychain...")
+      Log.info("Retrieving System Keychain...")
       var secKeychain: SecKeychain? = nil
 
       let copyStatus = SecKeychainCopyDomainDefault(
@@ -37,14 +37,14 @@ extension Keychain {
         throw ExitError(message: "Could not unwrap retrieved System Keychain",
                         code: .couldNotUnwrapSystemKeychain)
       }
-      Log.debug("Successfully retrieved System Keychain")
+      Log.info("Successfully retrieved System Keychain")
 
       try unlock(keychain: keychain)
       return keychain
     }
 
     private static func unlock(keychain: SecKeychain) throws {
-      Log.debug("Unlocking System Keychain...")
+      Log.info("Unlocking System Keychain...")
 
       let unlockStatus = SecKeychainUnlock(keychain, 0, nil, false)
 
@@ -54,7 +54,7 @@ extension Keychain {
                         securityStatus: unlockStatus)
       }
 
-      Log.debug("Succeeded unlocking System Keychain")
+      Log.info("Succeeded unlocking System Keychain")
     }
   }
 }

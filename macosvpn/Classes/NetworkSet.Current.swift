@@ -19,7 +19,7 @@ import SystemConfiguration
 public enum NetworkSet {
   public enum Current {
     public static func call(usingPreferencesRef preferences: SCPreferences) throws -> SCNetworkSet {
-      Log.debug("Fetching current network service set...")
+      Log.info("Fetching current network service set...")
       guard let networkSet = SCNetworkSetCopyCurrent(preferences) else {
         throw ExitError(message: "Could not fetch current network set",
                         code: .couldNotFetchCurrentNetworkSet)

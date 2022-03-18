@@ -18,7 +18,7 @@ import Foundation
 
 public enum Help {
   public static func showHelp() {
-    Log.debug("Showing help...")
+    Log.info("Showing help...")
 
     // USAGE
     
@@ -116,7 +116,7 @@ public enum Help {
   }
   
   public static func showVersion() {
-    Log.debug("Showing version...")
+    Log.info("Showing version...")
     print(self.currentVersion());
   }
 

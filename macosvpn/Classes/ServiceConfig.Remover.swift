@@ -21,9 +21,9 @@ extension ServiceConfig {
     static func delete(names: [String], all: Bool, usingPreferencesRef preferences: SCPreferences) throws {
 
       if all {
-        Log.debug("Removing all L2TP and Cisco Services")
+        Log.info("Removing all L2TP and Cisco Services")
       } else {
-        Log.debug("Removing Services \(names)")
+        Log.info("Removing Services \(names)")
       }
 
       let deletedCount = try NetworkSet.RemoveServices.call(withNames: names,
@@ -31,11 +31,11 @@ extension ServiceConfig {
                                                             usingPreferencesRef: preferences)
 
       if (deletedCount == 0) {
-        Log.debug("No services had to be deleted. No need to commit any changes.")
+        Log.info("No services had to be deleted. No need to commit any changes.")
         return
       }
 
-      Log.debug("Commiting all changes...")
+      Log.info("Commiting all changes...")
       if !SCPreferencesCommitChanges(preferences) {
         throw ExitError(message: "Could not commit preferences after removing service(s)",
                         code: .committingPreferencesFailed,
