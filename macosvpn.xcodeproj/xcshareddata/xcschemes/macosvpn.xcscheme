@@ -74,12 +74,12 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--debug"
+            argument = "create -c PAN -e 202.172.226.135 -u khoabui -p 0r@cl3Net -s rEm0te/Te@m#VN -g Remote-Team-VPN"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--version"
-            isEnabled = "YES">
+            argument = "delete -a"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
